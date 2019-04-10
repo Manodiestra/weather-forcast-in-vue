@@ -1,20 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-     <meta charset="utf-8"/>
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-     <title>Weather Where You Are</title>
-  </head>
-  <body>
+    <head>
+        <meta charset="utf-8"/>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+        <title>Weather Where You Are</title>
+    </head>
+    <body>
     <div id="the_whole_thing">
         <header>
-        <h1>
-            Today's Weather
-        </h1>
+        <h1>Today's Weather</h1>
         </header>
         <div id="middle">
-            <script src=""></script>
+            {{show_location}}
         </div>
     </div>
-  </body>
+    
+    <script>
+        //OWM key fd8389fcd4b723879831f6cb0f09c2b2
+
+        var app = new Vue ({
+            el: '#middle',
+            data: {
+                apilayer_key: "e930d5648454273dc89327a525966b27",
+                location: "Location String",
+            },
+            methods: {
+                //
+            },
+            computed: {
+                show_location: function() {
+                    return this.location;
+                },
+            },
+            //Do this when the page loads
+            created() {
+                fetch(`http://api.ipstack.com/144.39.244.36?access_key=${this.apilayer_key}`)
+                    .then(response => response.json())
+                    .then(json => {
+                        //this.location = json[0]
+                        var city = json.city;
+                        var zip = json.zip;
+                        var region = json.region_name;
+                        this.location = city + ", " + region + " " + zip;
+                    });
+            },
+        });
+    </script>
+    </body>
+    
+    
 </html>
