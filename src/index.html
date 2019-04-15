@@ -16,12 +16,13 @@
     </div>
     
     <script>
-        //OWM key fd8389fcd4b723879831f6cb0f09c2b2
+        //OWM key 
 
         var app = new Vue ({
             el: '#middle',
             data: {
                 apilayer_key: "e930d5648454273dc89327a525966b27",
+                owm_key: "fd8389fcd4b723879831f6cb0f09c2b2",
                 location: "Location String",
             },
             methods: {
@@ -42,6 +43,10 @@
                         var zip = json.zip;
                         var region = json.region_name;
                         this.location = city + ", " + region + " " + zip;
+                        return fetch(`http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&APPID=${this.owm_key}`)})
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(json);
                     });
             },
         });
