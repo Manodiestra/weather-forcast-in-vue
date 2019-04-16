@@ -14,13 +14,13 @@
         <div id="middle">
             <h2> Weather for {{show_location}}</h2>
             <div v-for="(day, index) in magic_list" class="weather">
-            <div class="day" style="boarder: 1px;">
-            <ul>
+            <div class="day" v-on:click="vote" v-bind:data-index="index">
+            <ul>{{index}}
                 <li >
-                    {{"Time " + Date(day.dt)}}
+                    {{Date(day.dt_text)}}
                 </li>
                 <li>
-                    {{"Current Temperature\n" + day.main.temp + "*F"}}
+                    {{"Temperature " + day.main.temp + "*F"}}
                 </li>
                 <li>
                     {{day.weather[0].description}}
@@ -45,21 +45,17 @@
             owm_key: "fd8389fcd4b723879831f6cb0f09c2b2",
             location: "Location String",
             magic_list: [],
-            obj: "",
-            time: "",
             date: 1555459200,
         },
         methods: {
-            
+            vote: function(ev) {
+                let index = ev.target.getAttribute('data-index');
+                this.magic_list[index].setAttribute(style) = "background-color: black;"
+            }
         },
         computed: {
             show_location: function() {
                 return this.location;
-            },
-            get_date: function(date) {
-                let r = new Date(this.date);
-                console.log(r);
-                return r.toUTCString();
             },
         },
         //Do this when the page loads
@@ -78,7 +74,6 @@
                     this.obj = json;
                     this.magic_list = json.list;
                     console.log(this.magic_list);
-                    console.log(typeof(this.magic_list[0].dt));
                 });
         },
     });
