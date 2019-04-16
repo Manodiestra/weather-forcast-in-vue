@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
+        <link rel="stylesheet" href="style.css"/>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
         <title>Weather Where You Are</title>
     </head>
@@ -12,7 +13,27 @@
         </header>
         <div id="middle">
             <h2> Weather for {{show_location}}</h2>
-            <div v-for="(day, index) in magic_list" class="weather"></div>
+            <div v-for="(day, index) in magic_list" class="weather">
+            <div class="day" style="boarder: 1px;">
+            <ul>
+                <li >
+                    {{"Time " + Date(day.dt)}}
+                </li>
+                <li>
+                    {{"Current Temperature\n" + day.main.temp + "*F"}}
+                </li>
+                <li>
+                    {{day.weather[0].description}}
+                </li>
+                <li>
+                    {{"Humidity " + day.main.humidity + "%"}}
+                </li>
+                <li>
+                    {{"Pressure " + day.main.pressure + "hPa"}}
+                </li>
+            </ul>
+            </div>
+            </div>
         </div>
     </div>
     
@@ -25,13 +46,20 @@
             location: "Location String",
             magic_list: [],
             obj: "",
+            time: "",
+            date: 1555459200,
         },
         methods: {
-            //
+            
         },
         computed: {
             show_location: function() {
                 return this.location;
+            },
+            get_date: function(date) {
+                let r = new Date(this.date);
+                console.log(r);
+                return r.toUTCString();
             },
         },
         //Do this when the page loads
@@ -50,7 +78,7 @@
                     this.obj = json;
                     this.magic_list = json.list;
                     console.log(this.magic_list);
-                    
+                    console.log(typeof(this.magic_list[0].dt));
                 });
         },
     });
