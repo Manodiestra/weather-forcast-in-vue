@@ -1,7 +1,36 @@
-.day {
+
+body {
+    background-color: black;
+    color: white;
+}
+
+.day0 {
     background-color: lightblue;
+    color: black;
     padding: 3px;
     margin: 3px;
     width: 400px;
     float: left;
+}
+
+.day1 {
+    background-color: lightgreen;
+    color: black;
+    padding: 3px;
+    margin: 3px;
+    width: 400px;
+    float: left;
+}
+
+.day2 {
+    background-color: red;
+    color: black;
+    padding: 3px;
+    margin: 3px;
+    width: 400px;
+    float: left;
+}
+
+.day ul {
+    list-style-type: None;
 }
