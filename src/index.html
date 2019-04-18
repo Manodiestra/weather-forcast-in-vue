@@ -13,11 +13,14 @@
         </header>
         <div id="middle">
             <h2> Weather for {{show_location}}</h2>
+            <h3>Votes</h3>
+            <p>Default {{defa}} / Likely {{likely}} / Unlikely {{unlik}}</p>
             <div v-for="(day, index) in magic_list" class="weather">
             <div class="day0" ref="mydiv" v-on:click="vote($event, index)">
             <ul>
                 <li>
-                    {{makeDate(day.dt)}}
+                    {{debug(day)}}
+                    {{makeDate(day.dt_txt.replace(" ", "T"))}}
                 </li>
                 <li>
                     {{"Temperature " + day.main.temp + "*F"}}
@@ -46,18 +49,52 @@
             location: "Location String",
             magic_list: [],
             date: 1555459200,
+            defa: 40,
+            likely: 0,
+            unlik: 0,
         },
         methods: {
             vote: function(event, index) {
                 let divv = this.$refs.mydiv[index];
-                let cls = divv.getAttribute('class');
-                cls = (parseInt(cls.slice(-1))+1)%3;
+                let bls = divv.getAttribute('class');
+                pls = (parseInt(bls.slice(-1)));
+                console.log(pls);
+                if (0 == parseInt(pls) && this.defa != 0) {
+                    this.defa = this.defa-1;
+                }
+                if (1 == parseInt(pls) && this.likely != 0) {
+                    this.likely = this.likely-1;
+                }
+                if (2 == parseInt(pls) && this.unlik != 0) {
+                    this.unlik = this.unlik-1;
+                }
+                cls = (parseInt(bls.slice(-1))+1)%3;
+                if (0 == parseInt(cls)) {
+                    this.defa = this.defa+1;
+                }
+                if (1 == parseInt(cls)) {
+                    this.likely = this.likely+1;
+                }
+                if (2 == parseInt(cls)) {
+                    this.unlik = this.unlik+1;
+                }
                 divv.setAttribute('class', 'day'+cls);
             },
             makeDate: function(intr) {
-                let d = Date(intr);
-                return d.toLocaleString('en-US', {weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true });
+                var d = new Date(intr);
+                var o = d.toDateString();
+                var hours = d.getHours();
+                var minutes = d.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ' ' + ampm;
+                return o+" "+strTime;
             },
+            debug: function(b) {
+                //console.log(b.dt_txt.replace(" ", "T"));
+            }
         },
         computed: {
             show_location: function() {
